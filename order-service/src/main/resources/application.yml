@@ -1,0 +1,48 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: order-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://root:root@localhost:8761/eureka,\
+                    http://root:root@localhost:8762/eureka"
+
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    # 点击Instance ID进行跳转的地址
+    status-page-url-path: /order/hello
+    prefer-ip-address: true
+
+
+
+ribbon:
+  eager-load:
+    enabled: false
+    clients:
+      - 'user-service'
+
+  # 连接超时
+  ConnectTimeout: 1000
+  # 读取超时
+  ReadTimeout: 3000
+
+  # 对当前实例的重试次数
+  MaxAutoRetries: 1
+  # 切换实例的重试次数
+  MaxAutoRetriesNextServer: 3
+  # 对所有操作请求都进行重试
+  okToRetryOnAllOperations: true
+  # 对http响应码进行重试
+  RetryableStatusCode: 500,404,502
+
+# 配置 user-service 的负载均衡规则，使用 bean 也可以配置
+#user-service:
+#  ribbon:
+#    NFLoadBalancerRuleClassName: com.dsky.scdemo.orderservice.loadbalanced.MyRule
+logging:
+  level:
+    com.dsky.scdemo.orderservice.feign.client.UserServiceClient: debug
