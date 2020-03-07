@@ -46,19 +46,17 @@ ribbon:
 logging:
   level:
     com.dsky.scdemo.orderservice.feign.client.UserServiceClient: debug
+
+# Feign整合Hystrix服务容错
 feign:
-  # 使用 okHttp 发送 http， 默认是 JDK 原生 URLConnection
-  okhttp:
+  hystrix:
     enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
-  httpclient:
-    enabled: false
-
-  # 开启压缩可以有效节约网络资源，提升接口性能，
-  # 只有当Feign的Http Client不是okhttp3的时候，压缩才会生效，配置源码在 FeignAcceptGzipEncodingAutoConfiguration
-  compression:
-    request:
-      enabled: true
-    response:
-      enabled: true
-
+hystrix:
+  dashboard:
+    init-parameters:

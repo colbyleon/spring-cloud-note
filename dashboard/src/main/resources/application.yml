@@ -1,0 +1,28 @@
+server:
+  port: 9011
+
+spring:
+  application:
+    name: dashboard
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://root:root@localhost:8761/eureka,\
+                    http://root:root@localhost:8762/eureka"
+
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    status-page-url-path: /turbine.stream
+
+
+turbine:
+  # 配置监控服务的列表，表明监控哪些服务多个使用","分割
+  app-config: order-service,user-service
+  aggregator:
+    # 指定聚合哪些集群,多个使用","分割，默认为default
+    cluster-config: default
+  # 用于指定集群名称，当服务数量非常多的时候，可以启动多个Turbine服务来构建不同的聚合集群，而该参数可以用来区分这些不同的聚合集群，
+  # 同时该参数值可以再Hystrix仪表盘中用来定位不同的聚合集群，只需在Hystrix Stream的URL中通过cluster参数来指定
+  cluster-name-expression: new String("default")
