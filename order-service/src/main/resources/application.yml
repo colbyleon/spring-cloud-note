@@ -46,3 +46,17 @@ ribbon:
 logging:
   level:
     com.dsky.scdemo.orderservice.feign.client.UserServiceClient: debug
+
+# Feign整合Hystrix服务容错
+feign:
+  hystrix:
+    enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+hystrix:
+  dashboard:
+    init-parameters:

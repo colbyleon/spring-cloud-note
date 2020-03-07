@@ -1,5 +1,6 @@
 package com.dsky.scdemo.userservice.controller;
 
+import com.dsky.scdemo.userservice.feign.OrderServiceClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,11 +14,13 @@ import javax.annotation.Resource;
  * @date 2020/2/28 17:09
  */
 @RestController
-@RequestMapping("/user")
 public class UserController {
 
     @Resource
     private RestTemplate restTemplate;
+
+    @Resource
+    private OrderServiceClient orderServiceClient;
 
     @GetMapping("/hello")
     public ResponseEntity<?> hello() throws InterruptedException {
@@ -34,4 +37,13 @@ public class UserController {
         return ResponseEntity.ok("Hello feign");
     }
 
+    @GetMapping("/hello/hystrix")
+    public ResponseEntity<String> helloHystrix() {
+        return ResponseEntity.ok("hello hystrix");
+    }
+
+    @GetMapping("/lb/choose")
+    public ResponseEntity<?> choose(){
+        return ResponseEntity.ok(orderServiceClient.chooseUrl("order-service"));
+    }
 }

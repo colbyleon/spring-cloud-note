@@ -12,7 +12,6 @@ import javax.annotation.Resource;
  * @date 2020/2/29 11:20
  */
 @RestController
-@RequestMapping("/user")
 public class EurekaClientController {
 
     @Resource

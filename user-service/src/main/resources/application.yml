@@ -1,6 +1,10 @@
 spring:
   application:
     name: user-service
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
 
 server:
   port: 8081
@@ -24,5 +28,8 @@ eureka:
     metadata-map:
       name: zhangsan
 
-
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

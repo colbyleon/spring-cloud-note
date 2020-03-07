@@ -1,0 +1,59 @@
+server:
+  port: 2103
+
+spring:
+  application:
+    name: zuul-demo
+
+  # 文件上传大小限制
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+
+zuul:
+  routes:
+    cxz:
+      path: /cxz/**
+      url: http://www.baidu.com
+  # 禁用过滤器
+  IpFilter:
+    pre:
+      disable: true
+  TestFilter:
+    pre:
+      disable: true
+
+  # 开启重试机制
+  retryable: true
+  # zuul的debug日志
+  debug:
+    request: true
+  # 把RequestContext中的调试信息作为响应头输出
+  include-debug-header: true
+
+ribbon:
+  # 请求连接的超时时间（ms）。
+  connectTimeout: 500
+  # 请求处理的超时时间（ms）。
+  readTimeout: 5000
+  # 对当前实例的重试次数。
+  maxAutoRetries: 1
+  # 切换实例的最大重试次数。
+  maxAutoRetriesNextServer: 3
+  # 对所有操作请求都进行重试。
+  okToRetryOnAllOperations: true
+  # 对指定的Http响应码进行重试
+  retryableStatusCodes: 500,404,502
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://root:root@localhost:8761/eureka,\
+                    http://root:root@localhost:8762/eureka"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
