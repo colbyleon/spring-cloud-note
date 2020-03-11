@@ -30,7 +30,7 @@ zuul:
   debug:
     request: true
   # 把RequestContext中的调试信息作为响应头输出
-  include-debug-header: true
+  include-debug-header: false
 
 ribbon:
   # 请求连接的超时时间（ms）。

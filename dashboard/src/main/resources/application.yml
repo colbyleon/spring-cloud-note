@@ -18,11 +18,11 @@ eureka:
 
 
 turbine:
-  # ���ü�ط�����б������������Щ������ʹ��","�ָ�
+  # 配置监控服务的列表，表明监控哪些服务多个使用","分割
   app-config: order-service,user-service
   aggregator:
-    # ָ���ۺ���Щ��Ⱥ,���ʹ��","�ָĬ��Ϊdefault
+    # 指定聚合哪些集群,多个使用","分割，默认为default
     cluster-config: default
-  # ����ָ����Ⱥ���ƣ������������ǳ����ʱ�򣬿����������Turbine������������ͬ�ľۺϼ�Ⱥ�����ò�����������������Щ��ͬ�ľۺϼ�Ⱥ��
-  # ͬʱ�ò���ֵ������Hystrix�Ǳ�����������λ��ͬ�ľۺϼ�Ⱥ��ֻ����Hystrix Stream��URL��ͨ��cluster������ָ��
+  # 用于指定集群名称，当服务数量非常多的时候，可以启动多个Turbine服务来构建不同的聚合集群，而该参数可以用来区分这些不同的聚合集群，
+  # 同时该参数值可以再Hystrix仪表盘中用来定位不同的聚合集群，只需在Hystrix Stream的URL中通过cluster参数来指定
   cluster-name-expression: new String("default")

@@ -15,6 +15,6 @@ public class UserClientFallbackFactory implements FallbackFactory<UserServiceCli
     @Override
     public UserServiceClient create(Throwable throwable) {
         log.error("user-service 回退：", throwable);
-        return new UserClientFallback();
+        return new UserServiceClientFallback();
     }
 }

@@ -1,0 +1,81 @@
+server:
+  port: 2001
+
+spring:
+  application:
+    name: gateway
+
+  redis:
+    host: 10.72.12.222
+    port: 6379
+    password: redis123456
+    database: 16
+
+
+  cloud:
+    gateway:
+      routes:
+        # 简单的路径匹配
+        - id: path_route
+          uri: http://cxytiandi.com
+          predicates:
+            - Path=/course/**
+            # 自定义路由断言
+            - CheckAuth=
+
+
+        - id: query_route
+          uri: http://cxytiandi.com
+          predicates:
+            # Query路由断言工厂接收两个参数，一个必需的参数和一个可选的正则表达式。
+            # 还有许多 Route Predicate Factory 参见 https://cloud.spring.io/spring-cloud-static/spring-cloud-gateway/2.2.2.RELEASE/reference/html/#the-after-route-predicate-factory
+            - Query=foo, ba.
+          filters:
+            - RedirectTo=302, http://baidu.com
+
+        # 手动添加 eureka 中注册的服务
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/us/{segment}
+          filters:
+            # 增加请求头过滤器
+            - AddRequestHeader=X-Request-Foo, {segment}
+            - name: CheckAuth2
+              args:
+                name: hahaha
+
+            # 增加限流过滤器
+            - name: RequestRateLimiter
+              args:
+                # 补充率 2
+                redis-rate-limiter.replenishRate: 2
+                # 令牌桶大小
+                redis-rate-limiter.burstCapacity: 4
+                # 限流 key 解析器
+                key-resolver: "#{@ipKeyResolver}"
+
+            # 配置一个Hystrix过滤器，该过滤器会使用Hystrix熔断与回退，原理是将请求包装成RouteHystrixCommand执行
+            - name: Hystrix
+              args:
+                name: fallbackcmd
+                # fallbackUri是发生熔断时回退的URI地址，目前只支持forward模式的URI。如果服务被降级，该请求会被转发到该URI中。
+                fallbackUri: forward:/fallback
+
+      # 开启自动添加 eureka 中注册的服务
+      discovery:
+        locator:
+          enabled: true
+          # gateway 默认使用大写匹配 service-id 这里改用小写
+          lower-case-service-id: true
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://root:root@localhost:8761/eureka,\
+                    http://root:root@localhost:8762/eureka"
+
+  instance:
+    instance-id: ${spring.application.name}:${spring.cloud.client.ip-address}:${server.port}
+    prefer-ip-address: true

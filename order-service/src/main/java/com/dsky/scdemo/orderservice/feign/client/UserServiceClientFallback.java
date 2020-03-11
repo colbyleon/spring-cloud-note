@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  * @date 2020/3/3 10:46
  */
 @Component
-public class UserClientFallback implements UserServiceClient {
+public class UserServiceClientFallback implements UserServiceClient {
     @Override
     public String helloFeign() {
         return "fallback hello feign";
