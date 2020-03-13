@@ -33,3 +33,16 @@ management:
     web:
       exposure:
         include: "*"
+
+# apollo 配置
+# https://github.com/ctripcorp/apollo/wiki
+# 源码看 SpringValue, AutoUpdateConfigChangeListener, SpringValueProcessor, ApolloProcessor等，spring.factories 中的类
+app:
+  id: SampleApp
+apollo:
+  # config service地址
+  meta: http://10.72.12.222:8080
+  # 项目启动的bootstrap阶段，向Spring容器注入配置信息。
+  bootstrap.enabled: true
+  # 配置命名空间
+  namespaces: application
