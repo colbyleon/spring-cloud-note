@@ -2,8 +2,6 @@ package com.dsky.scdemo.gateway.filter.sleuth;
 
 import brave.Span;
 import brave.Tracer;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;

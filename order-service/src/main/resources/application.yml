@@ -4,6 +4,13 @@ server:
 spring:
   application:
     name: order-service
+  boot:
+    admin:
+      client:
+        # 使用eureka时不需要
+#        url: http://localhost:9091
+        username: admin
+        password: admin
 
 eureka:
   client:
@@ -16,7 +23,6 @@ eureka:
     # 点击Instance ID进行跳转的地址
     status-page-url-path: /order/hello
     prefer-ip-address: true
-
 
 
 ribbon:
